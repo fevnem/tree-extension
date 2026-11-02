@@ -14,7 +14,7 @@ telemetry and no remote server.
 
 ## Install
 
-Tree 0.3.0 or newer must be running (it opens the endpoint on startup).
+Tree 0.3.2 or newer must be running (it opens the endpoint on startup).
 
 **Chrome / Edge / Brave**
 
