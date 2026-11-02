@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      :root { color-scheme: light dark; }
+      body {
+        width: 288px;
+        margin: 0;
+        padding: 14px;
+        font: 13px/1.45 "Segoe UI", system-ui, sans-serif;
+      }
+      h1 {
+        font-size: 14px;
+        font-weight: 600;
+        margin: 0 0 2px;
+      }
+      p.sub {
+        margin: 0 0 12px;
+        opacity: 0.65;
+        font-size: 12px;
+      }
+      button {
+        width: 100%;
+        padding: 8px 10px;
+        font: inherit;
+        border-radius: 6px;
+        border: 1px solid rgba(128, 128, 128, 0.45);
+        background: rgba(128, 128, 128, 0.12);
+        cursor: pointer;
+      }
+      button.primary {
+        background: #2f6fed;
+        border-color: #2f6fed;
+        color: #fff;
+        font-weight: 600;
+      }
+      label.row {
+        display: flex;
+        gap: 8px;
+        align-items: flex-start;
+        margin: 12px 0 0;
+        font-size: 12px;
+      }
+      #status {
+        margin-top: 10px;
+        font-size: 12px;
+        min-height: 16px;
+        opacity: 0.8;
+      }
+      .ok { color: #1a7f37; }
+      .bad { color: #b42318; }
+    </style>
+  </head>
+  <body>
+    <h1>Tree Downloader</h1>
+    <p class="sub">Sends links to Tree on this PC.</p>
+    <button id="send" class="primary">Download this page with Tree</button>
+    <label class="row">
+      <input type="checkbox" id="takeover" />
+      <span>Take over browser downloads (hand every download to Tree)</span>
+    </label>
+    <div id="status"></div>
+    <script src="popup.js"></script>
+  </body>
+</html>

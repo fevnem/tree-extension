@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "Tree Downloader",
+  "version": "0.1.0",
+  "description": "Send links and downloads to Tree, the native Windows download manager.",
+  "permissions": ["contextMenus", "storage", "downloads", "activeTab"],
+  "host_permissions": ["http://127.0.0.1:17817/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Tree Downloader",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/16.png",
+      "32": "icons/32.png",
+      "48": "icons/48.png",
+      "128": "icons/128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/16.png",
+    "32": "icons/32.png",
+    "48": "icons/48.png",
+    "128": "icons/128.png"
+  }
+}
