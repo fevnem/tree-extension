@@ -6,8 +6,21 @@ function show(text, ok) {
   statusEl.className = ok ? "ok" : "bad";
 }
 
-chrome.storage.local.get({ takeover: false }, (values) => {
+const cookiesEl = document.getElementById("cookies");
+
+chrome.storage.local.get({ takeover: false, sendCookies: true }, (values) => {
   takeoverEl.checked = values.takeover;
+  cookiesEl.checked = values.sendCookies;
+});
+
+cookiesEl.addEventListener("change", () => {
+  chrome.storage.local.set({ sendCookies: cookiesEl.checked });
+  show(
+    cookiesEl.checked
+      ? "Links will carry your session cookies (to 127.0.0.1 only)."
+      : "Links are sent without cookies.",
+    true
+  );
 });
 
 takeoverEl.addEventListener("change", () => {
@@ -27,7 +40,7 @@ document.getElementById("send").addEventListener("click", async () => {
     show("This tab has no http(s) link to send.", false);
     return;
   }
-  chrome.runtime.sendMessage({ type: "send", url }, (reply) => {
+  chrome.runtime.sendMessage({ type: "send", url, referer: url }, (reply) => {
     if (reply?.ok) show("Sent to Tree.", true);
     else show("Tree is not running (or its port is taken).", false);
   });

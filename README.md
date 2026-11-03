@@ -14,7 +14,7 @@ telemetry and no remote server.
 
 ## Install
 
-Tree 0.4.0 or newer must be running (it opens the endpoint on startup).
+Tree 0.5.1 or newer must be running (it opens the endpoint on startup).
 
 **Chrome / Edge / Brave**
 
@@ -42,6 +42,7 @@ Tree 0.4.0 or newer must be running (it opens the endpoint on startup).
 | `Alt+Shift+D` | send the current page |
 | `Alt+Shift+A` | open the picker |
 | Popup → *Take over browser downloads* | every browser download is cancelled and re-queued in Tree |
+| Popup → *Send cookies with links* | links carry your session cookies so authenticated files download (on by default) |
 
 ### The picker
 
@@ -55,10 +56,20 @@ The takeover toggle is stored per browser profile and applies to http(s)
 downloads only; `blob:` and `data:` URLs stay in the browser because Tree cannot
 fetch them.
 
+## Logged-in downloads
+
+Downloads behind a login need the session cookie. The extension reads the cookies
+for the link's own URL and hands them to Tree with the request, which applies them
+to the probe and every connection. They are sent to `127.0.0.1` only — nowhere
+else — and the popup has a switch to stop sending them at all.
+
+This is why the extension asks for the `cookies` permission and for access to all
+sites: it can only read the jar for URLs it is allowed to touch.
+
 ## How it works
 
 ```
-browser  --GET /add?url=<encoded>-->  127.0.0.1:17817  -->  Tree engine
+browser  --GET /add?url=…&cookie=…&referer=…-->  127.0.0.1:17817  -->  Tree engine
 browser  --GET /ping------------->    {"ok":true,"app":"tree"}
 ```
 

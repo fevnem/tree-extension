@@ -20,10 +20,30 @@ async function loadState(key) {
   return result[key];
 }
 
-async function send(url) {
+// Cookies make logged-in downloads work. They travel to 127.0.0.1 only, never
+// to a third party, and can be switched off in the popup.
+async function authQuery(url, referer) {
+  let query = `url=${encodeURIComponent(url)}`;
+  try {
+    const { sendCookies } = await chrome.storage.local.get({ sendCookies: true });
+    if (sendCookies && chrome.cookies) {
+      const jar = await chrome.cookies.getAll({ url });
+      if (jar.length) {
+        const header = jar.map((c) => `${c.name}=${c.value}`).join("; ");
+        query += `&cookie=${encodeURIComponent(header)}`;
+      }
+    }
+  } catch (_) {
+    // No permission or no jar: carry on anonymously.
+  }
+  if (referer) query += `&referer=${encodeURIComponent(referer)}`;
+  return query;
+}
+
+async function send(url, referer) {
   try {
     const response = await fetch(
-      `${ENDPOINT}/add?url=${encodeURIComponent(url)}`,
+      `${ENDPOINT}/add?${await authQuery(url, referer)}`,
       { cache: "no-store" }
     );
     return response.ok;
@@ -32,10 +52,10 @@ async function send(url) {
   }
 }
 
-async function sendMany(urls) {
+async function sendMany(urls, referer) {
   let count = 0;
   for (const url of urls) {
-    if (await send(url)) count += 1;
+    if (await send(url, referer)) count += 1;
   }
   return count;
 }
@@ -73,7 +93,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     return;
   }
   const url = info.linkUrl || info.srcUrl || info.pageUrl;
-  if (url) send(url);
+  if (url) send(url, tab && tab.url);
 });
 
 if (chrome.commands) {
@@ -145,11 +165,11 @@ function collectLinks() {
 chrome.runtime.onMessage.addListener((message, _sender, reply) => {
   const type = message && message.type;
   if (type === "send") {
-    send(message.url).then((ok) => reply({ ok }));
+    send(message.url, message.referer).then((ok) => reply({ ok }));
     return true;
   }
   if (type === "send-many") {
-    sendMany(message.urls || []).then((count) =>
+    sendMany(message.urls || [], message.referer).then((count) =>
       reply({ ok: count > 0, count })
     );
     return true;
@@ -187,5 +207,5 @@ chrome.downloads.onCreated.addListener(async (item) => {
   } catch (_) {
     // Already finished or gone.
   }
-  send(item.url);
+  send(item.url, item.referrer || item.url);
 });
