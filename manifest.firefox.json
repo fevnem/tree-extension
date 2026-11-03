@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Tree Downloader",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Send links and downloads to Tree, the native Windows download manager.",
   "permissions": [
     "contextMenus",

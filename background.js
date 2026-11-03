@@ -22,30 +22,33 @@ async function loadState(key) {
 
 // Cookies make logged-in downloads work. They travel to 127.0.0.1 only, never
 // to a third party, and can be switched off in the popup.
-async function authQuery(url, referer) {
-  let query = `url=${encodeURIComponent(url)}`;
+async function send(url, referer) {
+  const payload = { url };
   try {
     const { sendCookies } = await chrome.storage.local.get({ sendCookies: true });
     if (sendCookies && chrome.cookies) {
       const jar = await chrome.cookies.getAll({ url });
       if (jar.length) {
-        const header = jar.map((c) => `${c.name}=${c.value}`).join("; ");
-        query += `&cookie=${encodeURIComponent(header)}`;
+        payload.cookie = jar.map((c) => `${c.name}=${c.value}`).join("; ");
       }
     }
   } catch (_) {
     // No permission or no jar: carry on anonymously.
   }
-  if (referer) query += `&referer=${encodeURIComponent(referer)}`;
-  return query;
-}
+  if (referer) payload.referer = referer;
 
-async function send(url, referer) {
   try {
-    const response = await fetch(
-      `${ENDPOINT}/add?${await authQuery(url, referer)}`,
-      { cache: "no-store" }
-    );
+    // POST + a custom header: forces a preflight, so a web page cannot queue
+    // downloads through this endpoint the way a plain GET would allow.
+    const response = await fetch(`${ENDPOINT}/v1/downloads`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-tree-client": "extension"
+      },
+      body: JSON.stringify(payload),
+      cache: "no-store"
+    });
     return response.ok;
   } catch (_) {
     return false;

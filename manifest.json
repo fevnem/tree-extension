@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Tree Downloader",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Send links, media and whole pages of links to Tree, the native Windows download manager.",
   "permissions": ["contextMenus", "storage", "downloads", "activeTab", "scripting", "cookies"],
   "host_permissions": ["http://127.0.0.1:17817/*", "<all_urls>"],

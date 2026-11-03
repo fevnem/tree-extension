@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.4.0
+
+* **Security**: sends `POST /v1/downloads` with a `X-Tree-Client` header instead of
+  `GET /add?url=…`. A cross-origin GET needs no preflight, so any web page could
+  have queued downloads through the old endpoint; the POST forces a preflight that
+  Tree answers only for extension origins.
+* Cookies and the referer now travel in the JSON body.
+* Requires Tree 0.6.0 or newer.
+
 ## 0.3.0
 
 * **Logged-in downloads** — links carry the session cookies for their own URL plus

@@ -14,7 +14,7 @@ telemetry and no remote server.
 
 ## Install
 
-Tree 0.5.1 or newer must be running (it opens the endpoint on startup).
+Tree 0.6.0 or newer must be running (it opens the endpoint on startup).
 
 **Chrome / Edge / Brave**
 
@@ -69,8 +69,8 @@ sites: it can only read the jar for URLs it is allowed to touch.
 ## How it works
 
 ```
-browser  --GET /add?url=…&cookie=…&referer=…-->  127.0.0.1:17817  -->  Tree engine
-browser  --GET /ping------------->    {"ok":true,"app":"tree"}
+POST /v1/downloads {url, cookie, referer}  -->  127.0.0.1:17817  -->  Tree engine
+browser  --GET /ping------------->    {"ok":true,"app":"tree","api":2}
 ```
 
 Tree answers with CORS headers so an extension page may call it directly. The
