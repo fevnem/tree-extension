@@ -1,9 +1,9 @@
 {
   "manifest_version": 3,
   "name": "Tree Downloader",
-  "version": "0.1.0",
-  "description": "Send links and downloads to Tree, the native Windows download manager.",
-  "permissions": ["contextMenus", "storage", "downloads", "activeTab"],
+  "version": "0.2.0",
+  "description": "Send links, media and whole pages of links to Tree, the native Windows download manager.",
+  "permissions": ["contextMenus", "storage", "downloads", "activeTab", "scripting"],
   "host_permissions": ["http://127.0.0.1:17817/*"],
   "background": {
     "service_worker": "background.js"
@@ -16,6 +16,16 @@
       "32": "icons/32.png",
       "48": "icons/48.png",
       "128": "icons/128.png"
+    }
+  },
+  "commands": {
+    "send-page": {
+      "suggested_key": { "default": "Alt+Shift+D" },
+      "description": "Send the current page to Tree"
+    },
+    "pick-links": {
+      "suggested_key": { "default": "Alt+Shift+A" },
+      "description": "Pick links on this page for Tree"
     }
   },
   "icons": {

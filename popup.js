@@ -33,6 +33,10 @@ document.getElementById("send").addEventListener("click", async () => {
   });
 });
 
+document.getElementById("pick").addEventListener("click", () => {
+  chrome.runtime.sendMessage({ type: "open-picker" }, () => window.close());
+});
+
 chrome.runtime.sendMessage({ type: "status" }, (reply) => {
   if (reply?.ok) show("Tree is running.", true);
   else show("Tree is not running.", false);

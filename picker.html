@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Pick links for Tree</title>
+    <style>
+      :root { color-scheme: light dark; }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font: 13px/1.45 "Segoe UI", system-ui, sans-serif;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+      }
+      header {
+        padding: 12px 14px 8px;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.28);
+      }
+      h1 { font-size: 14px; margin: 0 0 2px; font-weight: 600; }
+      .sub { opacity: 0.65; font-size: 12px; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .filters { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+      .chip {
+        border: 1px solid rgba(128, 128, 128, 0.4);
+        background: transparent;
+        border-radius: 999px;
+        padding: 3px 10px;
+        font: inherit;
+        font-size: 12px;
+        cursor: pointer;
+      }
+      .chip[aria-pressed="true"] { background: #2f6fed; border-color: #2f6fed; color: #fff; }
+      input[type="search"] {
+        flex: 1;
+        min-width: 140px;
+        padding: 5px 9px;
+        border-radius: 6px;
+        border: 1px solid rgba(128, 128, 128, 0.45);
+        background: transparent;
+        color: inherit;
+        font: inherit;
+      }
+      ul { list-style: none; margin: 0; padding: 6px 0; overflow: auto; flex: 1; }
+      li { display: flex; gap: 10px; align-items: flex-start; padding: 6px 14px; }
+      li:hover { background: rgba(128, 128, 128, 0.10); }
+      li.hidden { display: none; }
+      .kind {
+        flex: none;
+        width: 46px;
+        text-align: center;
+        font-size: 10px;
+        font-weight: 600;
+        border-radius: 4px;
+        padding: 2px 0;
+        background: rgba(128, 128, 128, 0.22);
+        margin-top: 1px;
+      }
+      .kind.media { background: #7a3a78; color: #fff; }
+      .kind.image { background: #266e5a; color: #fff; }
+      .meta { min-width: 0; }
+      .name { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .url { font-size: 11px; opacity: 0.6; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      footer {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        padding: 10px 14px;
+        border-top: 1px solid rgba(128, 128, 128, 0.28);
+      }
+      #status { flex: 1; font-size: 12px; opacity: 0.8; }
+      button.primary {
+        padding: 8px 16px;
+        border-radius: 6px;
+        border: 1px solid #2f6fed;
+        background: #2f6fed;
+        color: #fff;
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      button.primary:disabled { opacity: 0.5; cursor: default; }
+      .empty { padding: 40px 14px; text-align: center; opacity: 0.7; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Pick links for Tree</h1>
+      <p class="sub" id="page">—</p>
+      <div class="filters">
+        <button class="chip" data-kind="all" aria-pressed="true">All</button>
+        <button class="chip" data-kind="media" aria-pressed="false">Media</button>
+        <button class="chip" data-kind="image" aria-pressed="false">Images</button>
+        <button class="chip" data-kind="link" aria-pressed="false">Links</button>
+        <button class="chip" id="select-all" aria-pressed="false">Select all shown</button>
+        <input type="search" id="search" placeholder="Filter by name or URL" />
+      </div>
+    </header>
+    <ul id="list"></ul>
+    <footer>
+      <span id="status">Reading the page…</span>
+      <button class="primary" id="send" disabled>Send to Tree</button>
+    </footer>
+    <script src="picker.js"></script>
+  </body>
+</html>

@@ -35,6 +35,10 @@
         color: #fff;
         font-weight: 600;
       }
+      button.secondary {
+        margin-top: 8px;
+        background: transparent;
+      }
       label.row {
         display: flex;
         gap: 8px;
@@ -56,6 +60,7 @@
     <h1>Tree Downloader</h1>
     <p class="sub">Sends links to Tree on this PC.</p>
     <button id="send" class="primary">Download this page with Tree</button>
+    <button id="pick" class="secondary">Pick links on this page…</button>
     <label class="row">
       <input type="checkbox" id="takeover" />
       <span>Take over browser downloads (hand every download to Tree)</span>
